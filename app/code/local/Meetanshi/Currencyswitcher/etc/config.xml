@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Meetanshi_Currencyswitcher>
+            <version>1.0.0</version>
+        </Meetanshi_Currencyswitcher>
+    </modules>
+    <global>
+        <models>
+            <core>
+                <rewrite>
+                    <store>Meetanshi_Currencyswitcher_Model_Store</store>
+                </rewrite>
+            </core>
+            <currencyswitcher>
+                <class>Meetanshi_Currencyswitcher_Model</class>
+            </currencyswitcher>
+        </models>
+        <events>
+            <controller_front_init_before>
+                <observers>
+                    <geoip_store_observer>
+                        <type>singleton</type>
+                        <class>currencyswitcher/observer</class>
+                        <method>storeSwitching</method>
+                    </geoip_store_observer>
+                </observers>
+            </controller_front_init_before>
+        </events>
+    </global>
+    <crontab>
+        <jobs>
+            <geoip_database_download>
+                <schedule>
+                    <cron_expr>0 3 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>currencyswitcher/cron::dataDownload</model>
+                </run>
+            </geoip_database_download>
+        </jobs>
+    </crontab>
+    <adminhtml>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <currencyswitcher>
+                                            <title>Meetanshi - Currencyswitcher</title>
+                                        </currencyswitcher>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+</config>
+
